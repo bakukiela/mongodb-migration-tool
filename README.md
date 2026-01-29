@@ -80,3 +80,7 @@ During migration you can choose to create backups. They will be saved in the `ba
 - If the target database already exists, data will be added to existing collections. Documents with the same `_id` will not be overwritten.
 - Migration of large databases may take a significant amount of time.
 - Make sure you have enough disk space in the temporary directory.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
