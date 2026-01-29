@@ -1,0 +1,30 @@
+# Backup files (archive format)
+backups/*.archive
+backups/*.gz
+backups/*.bson
+
+# Temporary files created during migration
+*.tmp
+*.log
+mongo-migrate-*.archive
+mongo-backup-target-*.archive
+
+# OS-specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
