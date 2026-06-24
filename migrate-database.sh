@@ -120,8 +120,8 @@ echo -e "${GREEN}✓ Target connection OK${NC}"
 
 # Check if database exists on source
 echo -e "${YELLOW}Checking if database exists on source...${NC}"
-DB_EXISTS=$(mongosh "${FROM_URL}/${DATABASE_NAME}" --quiet --eval "db.getName()" 2>/dev/null || echo "")
-if [ -z "$DB_EXISTS" ]; then
+DB_EXISTS=$(mongosh "${FROM_URL}" --quiet --eval "print(db.adminCommand({listDatabases:1,nameOnly:true}).databases.some(d=>d.name==='${DATABASE_NAME}'))" 2>/dev/null || echo "false")
+if [ "$DB_EXISTS" != "true" ]; then
     echo -e "${RED}Error: Database '${DATABASE_NAME}' not found on source${NC}"
     exit 1
 fi
@@ -143,8 +143,8 @@ fi
 
 # Check if database exists on target and warn about duplicates
 echo -e "${YELLOW}Checking target database...${NC}"
-TARGET_DB_EXISTS=$(mongosh "${TARGET_URL}/${DATABASE_NAME}" --quiet --eval "db.getName()" 2>/dev/null || echo "")
-if [ -n "$TARGET_DB_EXISTS" ]; then
+TARGET_DB_EXISTS=$(mongosh "${TARGET_URL}" --quiet --eval "print(db.adminCommand({listDatabases:1,nameOnly:true}).databases.some(d=>d.name==='${DATABASE_NAME}'))" 2>/dev/null || echo "false")
+if [ "$TARGET_DB_EXISTS" = "true" ]; then
     TARGET_COLLECTIONS=$(mongosh "${TARGET_URL}/${DATABASE_NAME}" --quiet --eval "db.getCollectionNames().length" 2>/dev/null || echo "0")
     if [ "$TARGET_COLLECTIONS" != "0" ] && [ -n "$TARGET_COLLECTIONS" ]; then
         echo -e "${YELLOW}⚠ WARNING: Target database '${DATABASE_NAME}' already exists with ${TARGET_COLLECTIONS} collection(s)${NC}"
